@@ -1,0 +1,1 @@
+export { default as DecentBar } from './components/decentBar/DecentBar';
