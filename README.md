@@ -18,6 +18,59 @@ The library allows for a single web app build that can simultaneously deploy to 
 * CSS is defined in CSS modules with component scope. No global CSS, other than explicit imports.
 * The scope of functionality is limited to things that are specific to Decent Portal.
 
+## Using the DecentBar
+
+If you're using the DecentBar, you probably intend for your web app to appear on the [Decent Portal](https://decentapps.net). And for that purpose, we ask that the DecentBar appears at the top of the page for your app. The idea is to have some consistency in app appearance and navigation. The elements of the Decent Bar:
+
+* A home button, which will just show the Decent "D" logo. Clicking on it will take the user to the home page of the portal.
+* The name of your app.
+* Link buttons - this is a conventional place to allow the user to navigate to other pages, maybe on other websites.
+* Contributors - put your name and other people's names that contributed to the project. You can omit this if you like, but consider that including your name is not just bragging--it's giving your users a small connection to or imagination of the real person that made the software.
+
+Example:
+```
+<DecentBar 
+  appName="Bleetbox" 
+  links={[{description:"Support", url:"https://github.com/joedev/bleetbox/issues"}]} 
+  onClickLink={onClickLink} 
+  contributorText="Joseph Blowsephius, Amy Hacksaw"
+/>
+```
+
+### DecentBar Component Properties
+
+* appName - This is the display name of your app.
+* contributorText (optional) - List names of people who contributed to the app here.
+* enabledDomains (optional) - List domain names that you want the DecentBar to render on. By default, this will include "decentapps.net", "localhost", and "127.0.0.1". The conditional rendering is useful for deploying the same web app to multiple hosting locations.
+* homeUrl (optional) - Where the user will navigate when they click on the home link. By default, this will be the base URL of wherever the web app is served, e.g., an app served from "https://decentapps.net/bleetbox" will have a default home URL of "https://decentapps.net".
+* links (optional) - An array of links, each of type `Link`, which is `{description:string, url:string}`. Description is what displays on the button. URL is what is passed to the `onClickLink` function. We recommend always including a "Support" link.
+* onClickLink - The callback function you implement to handle when the user clicks on a link. See "Implementing onClickLink()" section below.
+
+### Implementing onClickLink()
+
+If you just want to navigate to the URL provided in the link, you can use this function.
+
+`function onClickLink(link:Link) { window.location.href = link.url; }`
+
+But you can also use the handler to do things like:
+
+* Open some URLs in a separate tab or window.
+* Check for unsaved user data before navigating away.
+* Open modal dialogs, popup menus, or other in-app UI rather than navigating to a new URL.
+
+The "url" attribute of the link need not be an actual URL. It can just be a code that is interpreted by your handler.
+
+### DecentBar Behavior on Other Hosts
+
+By default, if you deploy your app with DecentBar on a website that isn't the Decent Portal, it won't be shown. The bar will execute minimal code to not render into the DOM. Why have this conditional hiding behavior?
+
+* It allows you to build one web app and deploy it to multiple places. This lets you avoid setting up separate/conditional builds.
+* It avoids confusing users into thinking they are on the Decent Portal when they're somewhere else that might not have the same privacy guarantees.
+
+You can easily override the hiding behavior with the "enabledDomains" property to include a non-Decent-Portal domain. But I suspect at that point, you might be better served by making your own bar so you can customize it for the experience you want on the non-Decent-Portal domain. You're welcome to reuse the DecentBar.tsx source as a starting point (vendoring!) if that suits you.
+
+The home icon is loaded from whatever favorite icon (favicon.ico or header-linked file) is used by your web app, which for a Decent Portal-hosted app will just be the "D" icon.
+
 ## Licensing
 
 My code and other files in this repository are licensed under the MIT open source license.

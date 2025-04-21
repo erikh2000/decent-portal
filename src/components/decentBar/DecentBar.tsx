@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styles from './DecentBar.module.css';
 import ContentButton from '@/components/contentButton/ContentButton';
