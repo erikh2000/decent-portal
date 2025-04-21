@@ -18,7 +18,15 @@ type Props = {
   contributorText?:string,
   enabledDomains?:string[],
   homeUrl?:string,
-  onClickLink:(link:Link) => void
+  onClickLink?:(link:Link) => void
+}
+
+function _onClickLink(link:Link) {
+  if (link.url.startsWith('http')) {
+    window.open(link.url, '_blank');
+  } else {
+    console.error('Link URL does not start with "http"--navigation canceled.', link.url);
+  }
 }
 
 function _findFavIconLink() {
@@ -36,7 +44,7 @@ function _appLinksContent(links:Link[], onClickLink:Function) {
   return <>Links:<br />{linkButtons}</>;
 }
 
-function DecentBar({ appName, appLinks, contributorText, onClickLink, enabledDomains = DEFAULT_ENABLED_DOMAINS, homeUrl = getBaseUrl() }: Props) {
+function DecentBar({ appName, appLinks, contributorText, onClickLink = _onClickLink, enabledDomains = DEFAULT_ENABLED_DOMAINS, homeUrl = getBaseUrl() }: Props) {
   const [favIconUrl, setFavIconUrl] = useState<string | null>(null);
 
   useEffect(() => {

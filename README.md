@@ -43,22 +43,31 @@ Example:
 * contributorText (optional) - List names of people who contributed to the app here.
 * enabledDomains (optional) - List domain names that you want the DecentBar to render on. By default, this will include "decentapps.net", "localhost", and "127.0.0.1". The conditional rendering is useful for deploying the same web app to multiple hosting locations.
 * homeUrl (optional) - Where the user will navigate when they click on the home link. By default, this will be the base URL of wherever the web app is served, e.g., an app served from "https://decentapps.net/bleetbox" will have a default home URL of "https://decentapps.net".
-* links (optional) - An array of links, each of type `Link`, which is `{description:string, url:string}`. Description is what displays on the button. URL is what is passed to the `onClickLink` function. We recommend always including a "Support" link.
-* onClickLink - The callback function you implement to handle when the user clicks on a link. See "Implementing onClickLink()" section below.
+* links (optional) - An array of links, each of type `Link`, which is `{description:string, url:string}`. Description is what displays on the button. We recommend always including a "Support" link.
+* onClickLink (optional) - The callback function you can optionally implement to customize behavior of clicking links. See "Implementing onClickLink()" section below.
 
 ### Implementing onClickLink()
 
-If you just want to navigate to the URL provided in the link, you can use this function.
-
-`function onClickLink(link:Link) { window.location.href = link.url; }`
-
-But you can also use the handler to do things like:
+If you just want to navigate to the URL provided in the link, you don't need to specify `onClickLink` or implement a handler. But you can use the handler to do things like:
 
 * Open some URLs in a separate tab or window.
 * Check for unsaved user data before navigating away.
 * Open modal dialogs, popup menus, or other in-app UI rather than navigating to a new URL.
 
-The "url" attribute of the link need not be an actual URL. It can just be a code that is interpreted by your handler.
+The "url" attribute of the link need not be an actual URL. It can just be a code that is interpreted by your handler. So for example:
+
+```
+function _onClickLink(link:Link) {
+  if (link.url === 'ABOUT') window.prompt("I'm a very private person. But I'll share with you that I have assassinated seventy-three squirrels. It wasn't personal.");
+}
+
+function HomeScreen() {
+  return (<div>
+    <DecentBar appName="Squirrel Death" link={[{description:"About Me", url:"ABOUT"}]} onClickLink={_onClickLink}/>
+    <p>My stupid screen.</p>
+  </div>);
+}
+```
 
 ### DecentBar Behavior on Other Hosts
 
