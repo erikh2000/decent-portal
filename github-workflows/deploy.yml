@@ -1,0 +1,15 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: erikh2000/decent-github-workflows/.github/workflows/deploy.yml@main
+    secrets:
+      BUNNY_API_KEY: ${{ secrets.BUNNY_API_KEY }}
+      APP_NAME: ${{ secrets.APP_NAME }}
+      STORAGE_ZONE_NAME: ${{ secrets.STORAGE_ZONE_NAME }}
