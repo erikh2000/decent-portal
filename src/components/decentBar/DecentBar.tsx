@@ -21,9 +21,11 @@ type Props = {
   onClickLink?:(link:Link) => void
 }
 
-function _onClickLink(link:Link) {
+export function defaultOnClickLink(link:Link) {
   if (link.url.startsWith('http')) {
-    window.open(link.url, '_blank');
+    const isSameDomain = link.url.startsWith(getBaseUrl());
+    const target = isSameDomain ? '_self' : '_blank';
+    window.open(link.url, target);
   } else {
     console.error('Link URL does not start with "http"--navigation canceled.', link.url);
   }
@@ -44,7 +46,7 @@ function _appLinksContent(links:Link[], onClickLink:Function) {
   return <>Links:<br />{linkButtons}</>;
 }
 
-function DecentBar({ appName, appLinks, contributorText, onClickLink = _onClickLink, enabledDomains = DEFAULT_ENABLED_DOMAINS, homeUrl = getBaseUrl() }: Props) {
+function DecentBar({ appName, appLinks, contributorText, onClickLink = defaultOnClickLink, enabledDomains = DEFAULT_ENABLED_DOMAINS, homeUrl = getBaseUrl() }: Props) {
   const [favIconUrl, setFavIconUrl] = useState<string | null>(null);
 
   useEffect(() => {

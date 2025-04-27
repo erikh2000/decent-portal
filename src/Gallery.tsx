@@ -1,4 +1,5 @@
 import DecentBar, { Link } from './components/decentBar/DecentBar';
+import { getBaseUrl } from './components/decentBar/decentBarUtil';
 import style from './Gallery.module.css'
 
 function testMinimal() {
@@ -30,9 +31,11 @@ function testLongAppNameWithNoSpaces() {
 }
 
 function testLinks() {
+  const baseUrl = getBaseUrl();
   const links = [
     { description: 'WebLLM', url: 'https://webllm.mlc.ai/' },
-    { description: 'Github', url: 'https://github.com/erikh2000/decent-portal' }
+    { description: 'Github', url: 'https://github.com/erikh2000/decent-portal' },
+    { description: 'Fun 404', url: `${baseUrl}/nonexistent` }
   ];
   return <>
     <h3>Test: Has Clickable Links</h3>
@@ -47,10 +50,10 @@ function testLinkClickHandler() {
     { description: 'test 3', url: 'three' },
   ];
   function _onClickLink(link: Link) {
-    window.prompt('Link URL', link.url);
+    window.alert(`Link URL = ${link.url}`);
   }
   return <>
-    <h3>Test: Has Clickable Links</h3>
+    <h3>Test: Custom Handles Links</h3>
     <DecentBar appName="My App" appLinks={links} onClickLink={_onClickLink}/>
   </>;
 }
