@@ -38,6 +38,7 @@
   },
   "files": [
     "dist",
+    "github-workflows",
     "README.md",
     "LICENSE",
     "package.json"
