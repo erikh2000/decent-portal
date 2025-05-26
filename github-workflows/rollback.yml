@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
-    uses: erikh2000/decent-github-workflows/.github/workflows/rollback.yml@main
+  rollback:
+    uses: DecentAppsNet/rollback@v1
+    with:
+      app-name: ${{ vars.APP_NAME }}
     secrets:
-      BUNNY_API_KEY: ${{ secrets.BUNNY_API_KEY }}
-      APP_NAME: ${{ secrets.APP_NAME }}
-      STORAGE_ZONE_NAME: ${{ secrets.STORAGE_ZONE_NAME }}
+      api-key: ${{ secrets.DECENT_API_KEY }}
